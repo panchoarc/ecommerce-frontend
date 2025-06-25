@@ -1,0 +1,17 @@
+/* tailwind base layer, global.css o tiptap.css */
+.tableWrapper {
+    @apply overflow-x-auto;
+}
+
+.tableWrapper table {
+    @apply border-collapse w-full min-w-[200px];
+}
+
+.tableWrapper th {
+    @apply bg-gray-100 text-gray-900 font-semibold;
+}
+
+.tableWrapper th,
+.tableWrapper td {
+    @apply border border-gray-300 px-2 py-1 text-left align-top;
+}

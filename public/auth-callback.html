@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xml:lang="en">
+  <head>
+    <title>Autenticación Exitosa</title>
+    <script>
+      window.onload = function () {
+        // Obtener el token de la URL (asumiendo que viene como parámetro 'token')
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+        const refreshToken = urlParams.get("refresh_token");
+
+        if (token) {
+          // Enviar mensaje a la ventana principal
+          window.opener.postMessage(
+            {
+              type: "AUTH_SUCCESS",
+              token: token,
+              refreshToken: refreshToken,
+            },
+            window.opener.location.origin
+          );
+
+          // Cerrar esta ventana después de un breve retraso
+          setTimeout(function () {
+            window.close();
+          }, 500);
+        } else {
+          // Si no hay token, mostrar error
+          document.getElementById("message").innerText =
+            "Error: No se recibió el token de autenticación";
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <div style="text-align: center; margin-top: 50px">
+      <h2>Autenticación Exitosa</h2>
+      <p>Esta ventana se cerrará automáticamente.</p>
+      <p id="message"></p>
+    </div>
+  </body>
+</html>
