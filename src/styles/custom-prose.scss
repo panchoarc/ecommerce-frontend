@@ -1,34 +1,35 @@
-
 @layer components {
-    .custom-prose {
-        @apply prose prose-lg text-gray-800 dark:text-gray-200 dark:prose-invert;
+  .custom-prose {
+    @apply prose prose-lg text-gray-800 dark:text-gray-200 dark:prose-invert select-none;
 
-        /* LINKS */
-        @apply prose-a:text-blue-600 hover:prose-a:text-blue-800 dark:prose-a:text-blue-400;
+    /* LINKS */
+    @apply prose-a:text-blue-600 hover:prose-a:text-blue-800 dark:prose-a:text-blue-400;
 
-        /* HEADINGS */
-        @apply prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-h5:text-lg prose-h6:text-base;
+    /* HEADINGS */
+    @apply prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-h5:text-lg prose-h6:text-base;
 
-        /* LISTS */
-        @apply prose-ul:list-disc prose-ol:list-decimal prose-li:marker:text-gray-500;
+    /* LISTS */
+    @apply prose-ul:list-disc prose-ol:list-decimal prose-li:marker:text-gray-500;
 
-        /* IMAGES */
-        @apply prose-img:rounded-lg prose-img:shadow-md;
+    /* IMAGES */
+    @apply prose-img:rounded-lg prose-img:shadow-md;
 
-        /* BLOCKQUOTE */
-        @apply prose-blockquote:italic prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-500;
+    /* BLOCKQUOTE */
+    @apply prose-blockquote:italic prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-500;
 
-        /* CODE BLOCKS */
-        @apply prose-pre:bg-gray-900 prose-pre:text-white prose-pre:rounded-lg prose-pre:px-4 prose-pre:py-2 prose-code:text-pink-500;
+    /* CODE BLOCKS */
+    @apply prose-pre:bg-gray-900 prose-pre:text-white prose-pre:rounded-lg prose-pre:px-4 prose-pre:py-2 prose-code:text-pink-500;
 
-        /* TABLES */
-        @apply [&_table]:w-full [&_table]:border [&_table]:border-gray-300 dark:[&_table]:border-gray-600;
-        @apply [&_th]:bg-gray-100 dark:[&_th]:bg-gray-800 [&_th]:text-left [&_th]:font-semibold;
-        @apply [&_th]:text-gray-700 dark:[&_th]:text-gray-300 [&_th]:border [&_th]:p-3;
-        @apply [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600 [&_td]:p-3;
-        @apply [&_tr:nth-child(even)]:bg-gray-50 dark:[&_tr:nth-child(even)]:bg-gray-700;
+    /* TABLES */
+    @apply [&_table]:w-full [&_table]:border-collapse [&_table]:border [&_table]:text-sm [&_table]:border-gray-300 dark:[&_table]:border-gray-600;
+    @apply [&_th]:bg-gray-100 dark:[&_th]:bg-gray-800 [&_th]:text-center [&_th]:font-bold [&_th]:text-gray-900 dark:[&_th]:text-gray-100 [&_th]:border [&_th]:p-1;
+    @apply [&_td]:border [&_td]:border-gray-300 dark:[&_td]:border-gray-600 [&_td]:p-3 [&_td]:text-gray-800 dark:[&_td]:text-gray-200;
+    @apply [&_tr:nth-child(even)]:bg-gray-50 dark:[&_tr:nth-child(even)]:bg-gray-700;
+    @apply [&_tr]:hover:bg-gray-100 dark:[&_tr]:hover:bg-gray-800;
+    @apply [&_td]:border-b [&_td]:last:border-b-0;
+    @apply [&_tr]:hover:bg-gray-100 dark:[&_tr]:hover:bg-gray-800;
 
-        /* Scroll horizontal para tablas en figure */
-        @apply [&_figure.table]:overflow-x-auto [&_figure.table>table]:min-w-full;
-    }
+    /* Scroll horizontal para tablas en figure */
+    @apply [&_figure.table]:overflow-x-auto [&_figure.table>table]:min-w-full;
+  }
 }
