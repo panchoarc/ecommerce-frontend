@@ -64,7 +64,7 @@ const ProductImageGallery: React.FC<Props> = ({ images }) => {
     <div className="flex flex-col w-full gap-4">
       {/* Imagen principal con zoom */}
       <section
-        className="relative w-full h-[300px] md:h-[400px] flex justify-center items-center"
+        className="select-none relative w-full h-[300px] md:h-[400px] flex justify-center items-center"
         ref={imageContainerRef}
         onMouseEnter={() => setShowZoom(true)}
         onMouseLeave={() => setShowZoom(false)}
@@ -87,6 +87,7 @@ const ProductImageGallery: React.FC<Props> = ({ images }) => {
           <div
             ref={zoomLensRef}
             className="
+              select-none
               absolute pointer-events-none hidden md:block 
               w-120 h-80 border border-gray-300 rounded shadow-lg z-10
               top-1/3 left-full ml-14
@@ -110,7 +111,7 @@ const ProductImageGallery: React.FC<Props> = ({ images }) => {
             type="button"
             onClick={() => handleSelectImage(img)}
             onMouseEnter={() => handleSelectImage(img)}
-            className={`w-16 h-16 flex p-0 rounded-md border focus:outline-none
+            className={`select-none w-16 h-16 flex p-0 rounded-md border focus:outline-none
               transition duration-200 hover:ring-2 hover:ring-blue-300
               ${
                 selectedImage?.url === img.url
