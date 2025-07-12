@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 import { Star } from "lucide-react";
 import React from "react";
 
-const formatDate = (dateStr) => {
+const formatDate = (dateStr: string) => {
   const [datePart, timePart] = dateStr.split(" ");
   const [day, month, year] = datePart.split("/");
   const [hour, minute] = timePart.split(":");
@@ -72,8 +72,8 @@ const ProductReviews = React.memo(({ reviews }) => {
               </div>
             </CardTitle>
           </CardHeader>
-          <CardContent className="py-4">
-            <p dangerouslySetInnerHTML={{ __html: review.comment }} />
+          <CardContent className="overflow-x-auto max-w-full py-4 custom-prose">
+            <div dangerouslySetInnerHTML={{ __html: review.comment }} />
           </CardContent>
         </Card>
       ))}
