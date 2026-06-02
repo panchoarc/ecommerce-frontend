@@ -17,6 +17,7 @@ const PasswordInput: FC<PasswordInputProps> = ({
   return (
     <div className="relative">
       <Input
+        autoComplete="current-password"
         {...props}
         name={name}
         type={showPassword ? "text" : "password"}

@@ -36,7 +36,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({
   const onDrop = (acceptedFiles: File[]) => {
     const validFiles = acceptedFiles.filter(
       (file) =>
-        ACCEPTED_IMAGE_TYPES.includes(file.type) && file.size <= MAX_FILE_SIZE
+        ACCEPTED_IMAGE_TYPES.includes(file.type) && file.size <= MAX_FILE_SIZE,
     );
 
     const updated = multiple ? [...previews, ...validFiles] : validFiles;
@@ -47,7 +47,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({
       onChange(
         multiple
           ? updated.filter((f) => f instanceof File)
-          : updated.find((f) => f instanceof File) ?? undefined
+          : (updated.find((f) => f instanceof File) ?? undefined),
       );
     }
   };
@@ -71,7 +71,7 @@ const ImageUploader: FC<ImageUploaderProps> = ({
       onChange(
         multiple
           ? updated.filter((f) => f instanceof File)
-          : updated.find((f) => f instanceof File) ?? undefined
+          : (updated.find((f) => f instanceof File) ?? undefined),
       );
     }
   };

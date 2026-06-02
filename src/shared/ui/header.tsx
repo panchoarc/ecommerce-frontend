@@ -15,7 +15,7 @@ const BaseHeader: FC<BaseHeaderProps> = ({
 
   return (
     <header
-      className={`w-full h-fit shadow-md flex justify-between items-center bg-white transition-transform duration-300 ${
+      className={`w-full h-fit shrink-0 shadow-md flex justify-between items-center bg-white transition-transform duration-300 ${
         isVisible ? "translate-y-0" : "-translate-y-full"
       }`}
     >

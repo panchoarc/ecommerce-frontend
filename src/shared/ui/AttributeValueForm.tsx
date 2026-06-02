@@ -29,7 +29,6 @@ export const AttributeValueForm: React.FC<AttributeValueFormProps> = ({
     const initial: InternalValues = {};
 
     for (const attr of attributes) {
-      console.log("ATTR", attr);
       const match = values?.find((v) => v.id === attr.id);
       if (match) {
         initial[attr.id] = Array.isArray(match.values)

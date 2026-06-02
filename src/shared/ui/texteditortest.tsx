@@ -7,7 +7,6 @@ interface TextEditorProps {
 }
 
 const TextEditorTestComponent: FC<TextEditorProps> = ({ value, onChange }) => {
-  console.log("TextEditorTest render");
 
   return (
     <div className="w-full h-[300px] rounded-md border border-input bg-background  text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
