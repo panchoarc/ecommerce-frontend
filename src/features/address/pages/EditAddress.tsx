@@ -87,11 +87,7 @@ const EditAddress = () => {
         city: data.city,
       };
 
-      const response = await AddressService.updateAddress(
-        Number(id),
-        addressData
-      );
-      console.log("Response", response);
+      await AddressService.updateAddress(Number(id), addressData);
 
       const redirectPath = location.state?.from ?? "my-address";
       navigate(`/${redirectPath}`);

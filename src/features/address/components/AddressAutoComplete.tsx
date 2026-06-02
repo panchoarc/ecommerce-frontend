@@ -14,31 +14,27 @@ const AddressAutocomplete = ({
 }: AddressAutocompleteProps) => {
   const [results, setResults] = useState<any[]>([]);
   const [showList, setShowList] = useState(false);
-  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
-  const blurTimeout = useRef<NodeJS.Timeout | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!value) {
-      setResults([]);
-      return;
-    }
+  if (!value) {
+    setResults([]);
+    return;
+  }
 
-    if (debounceTimeout.current) {
-      clearTimeout(debounceTimeout.current);
-    }
+  const timeout = setTimeout(() => {
+    fetch(
+      `https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setResults(data);
+        setShowList(true);
+      });
+  }, 500);
 
-    debounceTimeout.current = setTimeout(() => {
-      fetch(
-        `https://nominatim.openstreetmap.org/search?q=${value}&format=json&addressdetails=1`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setResults(data);
-          setShowList(true);
-        });
-    }, 500);
-  }, [value]);
+  return () => clearTimeout(timeout);
+}, [value]);
 
   const handleSelect = (result: any) => {
     onChange(result.display_name);

@@ -60,8 +60,7 @@ const CreateAddress = () => {
         city: data.city,
       };
 
-      const response = await AddressService.createNewAddress(addressData);
-      console.log("Response", response);
+      await AddressService.createNewAddress(addressData);
 
       const redirectPath = location.state?.from ?? "/my-address";
       const step = location.state?.step ?? 1;
