@@ -1,23 +1,32 @@
 import { BrowserRouter } from "react-router";
 import { CartProvider } from "@/features/cart/hooks/CartContext";
-import { AuthProvider } from "@/features/auth/hooks/AuthContext";
 import { UserProvider } from "./features/user/hooks/UserContext";
-
 import { Toaster } from "@/shared/ui/sonner";
+import { AuthProvider } from "react-oidc-context";
 
 import RoleBasedRoutes from "@/shared/utils/RoleBasedRoutes";
+import { oidcConfig } from "@/features/auth/config/OidcConfig";
 
 function App() {
   return (
     <BrowserRouter>
       <Toaster />
-      <UserProvider>
-        <AuthProvider>
+      <AuthProvider
+        {...oidcConfig}
+        onSigninCallback={() =>
+          window.history.replaceState(
+            {},
+            document.title,
+            window.location.pathname,
+          )
+        }
+      >
+        <UserProvider>
           <CartProvider>
             <RoleBasedRoutes />
           </CartProvider>
-        </AuthProvider>
-      </UserProvider>
+        </UserProvider>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
