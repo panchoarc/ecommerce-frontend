@@ -15,12 +15,10 @@ import { StarterKit } from "@tiptap/starter-kit";
 
 // --- Custom Extensions ---
 
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
+import {Table,TableCell,TableHeader,TableRow} from "@tiptap/extension-table";
+
 import { Color } from "@tiptap/extension-color";
-import TextStyle from "@tiptap/extension-text-style";
+import {TextStyle} from "@tiptap/extension-text-style";
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button";
@@ -63,7 +61,7 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon";
 
 // --- Hooks ---
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility";
-import { useMobile } from "@/hooks/use-mobile";
+import { useIsMobile } from "@/shared/hooks/use-mobile";
 import { useWindowSize } from "@/hooks/use-window-size";
 
 // --- Components ---
@@ -183,7 +181,7 @@ export function SimpleEditor({
   content: string;
   onChange: (html: string) => void;
 }>) {
-  const isMobile = useMobile();
+  const isMobile = useIsMobile();
   const windowSize = useWindowSize();
   const toolbarRef = React.useRef<HTMLDivElement>(null);
   const [mobileView, setMobileView] = React.useState<
@@ -228,17 +226,22 @@ export function SimpleEditor({
     },
   });
 
+  const [overlayHeight, setOverlayHeight] = React.useState(0);
+
+  React.useLayoutEffect(() => {
+    const toolbar = toolbarRef.current;
+    if (!toolbar) {
+      setOverlayHeight(0);
+      return;
+    }
+
+    setOverlayHeight(toolbar.getBoundingClientRect().height);
+  }, [isMobile, mobileView, windowSize.height]);
+
   const bodyRect = useCursorVisibility({
     editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
+    overlayHeight,
   });
-
-  // Forzar vista "main" si pasa de mobile a desktop
-  React.useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
-      setMobileView("main");
-    }
-  }, [isMobile, mobileView]);
 
   React.useEffect(() => {
     if (editor && editor.getHTML() !== content) {
