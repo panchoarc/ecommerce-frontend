@@ -13,7 +13,6 @@ const AddressStep = ({
   const location = useLocation();
 
   const handleAddAddress = () => {
-    console.log("Location", location.pathname);
     navigate(`/my-address/create`, {
       state: { from: location.pathname, step: 1 },
     });
