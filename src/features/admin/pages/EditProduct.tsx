@@ -59,8 +59,6 @@ const EditProduct: FC = () => {
     const fetchProduct = async () => {
       try {
         const product = await ProductService.getProduct(Number(id));
-
-        console.log("Product", product);
         const imagesResponse = await ProductService.getProductImages(
           product.id
         );
@@ -75,10 +73,6 @@ const EditProduct: FC = () => {
             values: attribute.values,
           };
         });
-
-        console.log("TRANSFORMED ATTRIBUTES", transformedAttributes);
-
-        console.log("attributesResponse", attributesResponse);
 
         const mainImage = imagesResponse.find(
           (image) => image.isMainImage
@@ -188,8 +182,6 @@ const EditProduct: FC = () => {
         attributeId: attr.id,
         values: attr.values,
       }));
-
-      console.log("Product Attributes", productAttributes);
 
       // Actualizamos el producto
       await ProductService.updateProduct(Number(id), productData);

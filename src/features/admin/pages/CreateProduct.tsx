@@ -93,16 +93,10 @@ const CreateProduct: FC = () => {
         });
       }
 
-      console.log("ATTRIBUTES DATA", data.attributes);
-
-      console.log("ALL ATTRIBUTES", attributes);
-
       const productAttributes = data.attributes?.map((attr) => ({
         attributeId: attr.id,
         values: attr.values,
       }));
-
-      console.log("PRODUCT ATTRIBUTES", productAttributes);
 
       try {
         const response = await ProductService.createProduct(productData);
@@ -116,7 +110,7 @@ const CreateProduct: FC = () => {
         );
 
         toast.success("Producto creado correctamente");
-        navigate("/products");
+        navigate("/admin/products");
       } catch (error) {
         console.error("Error creando producto:", error);
         alert("Error creando producto. Intenta nuevamente.");
@@ -129,7 +123,7 @@ const CreateProduct: FC = () => {
   };
 
   return (
-    <div className="w-full mx-auto min-h-screen md:max-w-5xl mt-6 px-4 sm:px-6 py-6 shadow-lg rounded-lg bg-white">
+    <div className="min-h-full w-full mx-auto md:max-w-5xl mt-6 px-4 sm:px-6 py-6 shadow-lg rounded-lg bg-white">
       <h2 className="text-2xl font-bold mb-4">Crear Producto</h2>
 
       <Form {...form}>

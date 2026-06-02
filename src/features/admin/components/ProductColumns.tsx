@@ -187,7 +187,7 @@ export const createProductColumns = (
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={`/products/edit/${product.id}`}>Edit</Link>
+              <Link to={`/admin/products/edit/${product.id}`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Button

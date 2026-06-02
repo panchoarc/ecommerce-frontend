@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { Link } from "react-router";
-import { useAuth } from "@/features/auth/hooks/AuthContext";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared/ui/button";
 import BaseHeader from "@/shared/ui/header";
-import { useUser } from "@/features/user/hooks/UserContext";
 
 import {
   DropdownMenu,
@@ -16,17 +15,16 @@ import {
 import { getDefaultRouteByRole } from "@/shared/utils/roleRedirect";
 
 const AdminHeader: FC = () => {
-  const { logout, isAuthenticated } = useAuth();
-  const { profile } = useUser();
+  const { logout, isAuthenticated, user } = useAuth();
 
-  const role: string = profile?.roles?.[0] ?? "";
+  const role: string = user?.profile?.realm_access?.roles?.[0] ?? "";
 
   const redirectionToIndex = getDefaultRouteByRole(role);
 
   return (
     <BaseHeader>
       <div className="flex justify-between items-center px-2 py-2 w-full">
-        <Link to="/dashboard" className="text-xl font-bold">
+        <Link to="/admin/dashboard" className="text-xl font-bold">
           Mi eCommerce
         </Link>
         <nav className="space-x-4 flex items-center">
@@ -34,12 +32,12 @@ const AdminHeader: FC = () => {
             Inicio
           </Link>
 
-          {isAuthenticated && profile && (
+          {isAuthenticated && user?.profile && (
             <div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="text-gray-700">
-                    Hola, {profile?.firstName}
+                    Hola, {user.profile.firstName}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">

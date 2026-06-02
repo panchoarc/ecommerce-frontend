@@ -34,8 +34,6 @@ const CreateCategories: FC = () => {
   });
 
   const onSubmit = async (data: CreateCategory) => {
-    console.log("Data to submit:", data); // Verifica los datos que se envían
-
     const productPayload = {
       name: data.name,
       description: data.description,
@@ -53,14 +51,10 @@ const CreateCategories: FC = () => {
       const categoryResponse = await CategoryService.createCategory(
         productPayload
       );
-
-      console.log("Category created successfully:", categoryResponse);
-      const attributesResponse = await CategoryService.addCategoryAttribute(
+      await CategoryService.addCategoryAttribute(
         categoryResponse.id,
         attributesPayload
       );
-
-      console.log("Attributes added successfully:", attributesResponse);
 
       toast.success("Category created successfully!");
       form.reset();

@@ -1,26 +1,21 @@
+import { LayoutProps } from "@/config/routes";
 import AdminSidebar from "@/features/admin/components/AdminSidebar";
 import AdminHeader from "@/features/admin/layouts/AdminHeader";
-import { SidebarProvider, SidebarTrigger } from "@/shared/ui/sidebar";
-import { FC, ReactNode } from "react";
+import { SidebarProvider } from "@/shared/ui/sidebar";
+import { FC } from "react";
 
-interface AdminLayoutProps {
-  children: ReactNode;
-  hasSidebar: boolean;
-}
-
-const AdminLayout: FC<AdminLayoutProps> = ({ children, hasSidebar }) => {
+const AdminLayout: FC<LayoutProps> = ({ children, hasSidebar }) => {
   return (
-    <div className="size-full h-screen overflow-y-auto">
-      <AdminHeader />
-      <SidebarProvider>
-        <div className="flex w-full">
-          {/* Ajusta según la altura del header */}
+    <SidebarProvider>
+      <div className="w-full h-screen flex flex-col">
+        <AdminHeader />
+        <div className="flex flex-1 min-h-0">
           {hasSidebar && <AdminSidebar />}
-          <SidebarTrigger />
-          <main className="size-full">{children}</main>
+
+          <main className="w-full m-4 p-4 flex-1 overflow-y-auto">{children}</main>
         </div>
-      </SidebarProvider>
-    </div>
+      </div>
+    </SidebarProvider>
   );
 };
 

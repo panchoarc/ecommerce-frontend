@@ -1,20 +1,23 @@
+import { Table } from "@tanstack/react-table";
 import { Button } from "@/shared/ui/button";
-import { FC } from "react";
 
-import { ReactTable } from "@tanstack/react-table"; // Adjust the import based on your project structure
-
-interface TablePaginationProps {
-  table: ReactTable<any>; // Replace with the correct type for your table instance
+interface TablePaginationProps<T> {
+  table: Table<T>;
   pagination: {
     currentPage: number;
     totalPages: number;
+    pageIndex: number;
+    pageSize: number;
   };
 }
 
-const TablePagination: FC<TablePaginationProps> = ({ table, pagination }) => {
+const TablePagination = <TData,>({
+  table,
+  pagination,
+}: TablePaginationProps<TData>) => {
   const hasNoData = pagination.totalPages === 0;
 
-  const currentPage = hasNoData ? 1 : pagination.currentPage + 1;
+  const currentPage = hasNoData ? 1 : pagination.pageIndex + 1;
   const totalPages = hasNoData ? 1 : pagination.totalPages;
 
   return (

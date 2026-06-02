@@ -25,7 +25,7 @@ export type Categories = {
   isActive: boolean;
 };
 
-export const createCategoriesColumns = (
+export const createPermissionsColumns = (
   refetch: () => void
 ): ColumnDef<Categories>[] => [
   {
