@@ -7,7 +7,7 @@ import {
   SidebarMenuItem,
 } from "@/shared/ui/sidebar";
 
-import { Home, ListOrderedIcon } from "lucide-react";
+import { Home, ListOrderedIcon, ShipWheel, SquareDashedText  } from "lucide-react";
 import { FaAddressBook } from "react-icons/fa";
 import { Link } from "react-router";
 
@@ -27,6 +27,16 @@ const items = [
     url: "/my-orders",
     icon: ListOrderedIcon,
   },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: ShipWheel,
+  }
+  ,{
+    title: "Sessions",
+    url: "/sessions",
+    icon: SquareDashedText,
+  }
 ];
 
 const UserSidebar = () => {
@@ -38,7 +48,7 @@ const UserSidebar = () => {
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild>
-                  <Link to={item.url} replace>
+                  <Link to={item.url} onClick={() => console.log("CLICK:", item.url)}>
                     <item.icon />
                     <span>{item.title}</span>
                   </Link>

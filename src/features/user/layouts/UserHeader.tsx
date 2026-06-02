@@ -1,10 +1,9 @@
 import { FC } from "react";
 import { Link } from "react-router";
-import { useAuth } from "@/features/auth/hooks/AuthContext";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { Button } from "@/shared/ui/button";
 import BaseHeader from "@/shared/ui/header";
 import { getDefaultRouteByRole } from "@/shared/utils/roleRedirect";
-import { useUser } from "@/features/user/hooks/UserContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,20 +20,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/shared/ui/sheet";
-import {
-  Menu,
-  User,
-  Settings,
-  LogOut,
-  BaggageClaimIcon,
-  ShoppingBag,
-} from "lucide-react";
+import { Menu, User, Settings, LogOut, ShoppingBag } from "lucide-react";
 import CategoryNavBar from "@/features/categories/components/CategoryMenu";
 
 const UserHeader: FC = () => {
-  const { logout, isAuthenticated } = useAuth();
-  const { profile } = useUser();
-  const role = profile?.roles?.[0];
+  const { logout, isAuthenticated, profile, roles } = useAuth();
+  const role = roles.length > 0 ? roles[0] : null;
   const finalRedirectPath = role ? getDefaultRouteByRole(role) : "/";
 
   const CommonLinks = (
@@ -119,7 +110,7 @@ const UserHeader: FC = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="text-gray-700">
-                  Hola, {profile.firstName}
+                  Hola, {profile.given_name + " " + profile.family_name}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
