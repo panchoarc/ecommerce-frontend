@@ -58,7 +58,6 @@ export const getProducts = async ({
   pageSize = 10,
 }: GetProductsParams): Promise<ProductResponse> => {
   try {
-    console.log("Filters Service", filters);
     const response = await instance.post(
       `/products/search?page=${page}&size=${pageSize}`,
       filters

@@ -35,14 +35,14 @@ const ProductList: FC<ProductListProps> = ({
 
   return (
     <div className="flex flex-col w-full max-h-screen">
-      <div className="flex flex-col flex-grow">
+      <div className="flex flex-col grow">
         <SidebarTrigger className="block md:hidden" />
         <div className="flex flex-row justify-end items-center px-4 py-2">
           <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
         </div>
 
         {products.length === 0 ? (
-          <div className="flex items-center justify-center px-4 text-center text-muted-foreground flex-grow">
+          <div className="flex items-center justify-center px-4 text-center text-muted-foreground grow">
             No hay productos disponibles.
           </div>
         ) : (
@@ -50,7 +50,7 @@ const ProductList: FC<ProductListProps> = ({
             className={`grid gap-3 pb-4 mx-2 ${
               viewMode === "list"
                 ? "grid-cols-1"
-                : "grid-cols-[repeat(auto-fill,_minmax(200px,_1fr))]"
+                : "grid-cols-[repeat(auto-fill,minmax(200px,1fr))]"
             }`}
           >
             {products.map((product) => (
