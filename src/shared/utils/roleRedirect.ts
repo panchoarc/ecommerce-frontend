@@ -1,9 +1,10 @@
 export const getDefaultRouteByRole = (role: string): string => {
-  const redirects: Record<string, string> = {
-    admin: "/dashboard",
-    user: "/dashboard",
-    guest: "login",
-  };
-
-  return redirects[role];
+  switch (role) {
+    case "ADMIN":
+      return "/dashboard";
+    case "USER":
+      return "/dashboard";
+    default:
+      return "/"; // 👈 mejor que /login
+  }
 };
