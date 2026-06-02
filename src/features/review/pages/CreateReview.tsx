@@ -41,7 +41,6 @@ const CreateReview = () => {
   });
 
   const handleSubmit = async (data: CreateReviewInput) => {
-    console.log("LOG DATA", data);
     try {
       setIsSubmitting(true);
       await ReviewService.createReview(data);

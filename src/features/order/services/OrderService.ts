@@ -11,7 +11,7 @@ export const getMyOrders = async ({
 }: GetOrderParams) => {
   try {
     const response = await instance.get(
-      `/orders?page=${page}&size=${pageSize}`
+      `/orders?page=${page}&size=${pageSize}`,
     );
     return response.data;
   } catch (error) {
