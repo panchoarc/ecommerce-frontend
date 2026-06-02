@@ -1,4 +1,7 @@
 import instance from "@/config/axios";
+import publicInstance from "@/config/axiosPublicInstance";
+import { UserManager } from "oidc-client-ts";
+import { oidcConfig } from "../config/OidcConfig";
 
 interface LoginData {
   username: string;
@@ -17,9 +20,15 @@ interface AuthResponse {
   token: string;
 }
 
+const userManager = new UserManager(oidcConfig);
+
+let refreshPromise: Promise<any> | null = null;
+
 export const login = async (data: LoginData): Promise<string> => {
   try {
-    const response = await instance.post("/auth/login", data);
+    const response = await publicInstance.post("/auth/login", data, {
+      withCredentials: true,
+    });
     return response.data.data.access_token;
   } catch (error) {
     return Promise.reject(error);
@@ -28,18 +37,17 @@ export const login = async (data: LoginData): Promise<string> => {
 
 export const logout = async (): Promise<void> => {
   try {
-    await instance.post("/auth/logout");
+    await publicInstance.post("/auth/logout");
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
 export const loginWithProvider = async (
-  provider: string
+  provider: string,
 ): Promise<AuthResponse> => {
   try {
-    const response = await instance.get(`/auth/provider/${provider}`);
-    console.log(response);
+    const response = await publicInstance.get(`/auth/provider/${provider}`);
     return response.data;
   } catch (error) {
     return Promise.reject(error);
@@ -47,24 +55,44 @@ export const loginWithProvider = async (
 };
 
 export const registerUser = async (data: RegisterData): Promise<void> => {
+  console.log("USER DATA:", data);
   try {
     const response = await instance.post("/auth/register", data);
-    console.log(response);
     return response.data;
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
-export const refreshToken = async (): Promise<string> => {
+export const getAuthStatus = async (): Promise<string> => {
   try {
-    const response = await instance.get("/auth/refresh-token");
-    console.log("Response", response);
-    return response.data.data.access_token;
+    const response = await instance.get("/auth/status");
+    return response.data.data;
   } catch (error) {
-    console.error("Error refreshing token", error.response);
     return Promise.reject(error);
   }
+};
+
+const getValidUser = async () => {
+  let user = await userManager.getUser();
+
+  if (!user) return null;
+
+  if (!user.expired) return user;
+
+  // evita múltiples refresh simultáneos
+  refreshPromise ??= userManager.signinSilent().finally(() => {
+    refreshPromise = null;
+  });
+
+  try {
+    user = await refreshPromise;
+  } catch (error) {
+    console.error(error);
+    await userManager.signoutRedirect();
+    return null;
+  }
+  return user;
 };
 
 const AuthService = {
@@ -72,7 +100,8 @@ const AuthService = {
   logout,
   loginWithProvider,
   registerUser,
-  refreshToken,
+  getAuthStatus,
+  getValidUser,
 };
 
 export default AuthService;

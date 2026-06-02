@@ -31,7 +31,6 @@ const Register: FC = () => {
   const onSubmit = async (data: RegisterForm) => {
     return await AuthService.registerUser(data)
       .then((response) => {
-        console.log(response);
         toast.success(response.message);
         reset();
       })
