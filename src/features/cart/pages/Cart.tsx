@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/hooks/AuthContext";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useCart } from "@/features/cart/hooks/CartContext";
 
 import CartEmpty from "@/features/cart/components/CartEmpty";

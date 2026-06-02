@@ -7,14 +7,12 @@ import {
   ReactNode,
 } from "react";
 
-// --- Tipos ---
-interface CartItem {
+type CartItem = {
   id: number;
   name: string;
   price: number;
   quantity: number;
-  [key: string]: any;
-}
+};
 
 interface CartContextType {
   cart: CartItem[];
@@ -28,74 +26,104 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+// --- VALIDACIÓN DE SEGURIDAD ---
+const isValidCartItem = (item: any): item is CartItem => {
+  return (
+    item &&
+    typeof item === "object" &&
+    typeof item.id === "number" &&
+    Number.isFinite(item.id) &&
+    typeof item.name === "string" &&
+    item.name.length > 0 &&
+    item.name.length < 200 &&
+    typeof item.price === "number" &&
+    Number.isFinite(item.price) &&
+    item.price >= 0 &&
+    typeof item.quantity === "number" &&
+    Number.isFinite(item.quantity) &&
+    item.quantity > 0 &&
+    item.quantity < 1000
+  );
+};
+
+// --- SANITIZACIÓN ---
+const sanitizeCart = (data: any): CartItem[] => {
+  if (!Array.isArray(data)) return [];
+  return data.filter(isValidCartItem);
+};
+
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  // ✅ Cargar el carrito directamente desde localStorage en el estado inicial
   const [cart, setCart] = useState<CartItem[]>(() => {
     try {
-      const storedCart = localStorage.getItem("cart");
-      return storedCart ? JSON.parse(storedCart) : [];
-    } catch (error) {
-      console.error("Error parsing cart from localStorage:", error);
+      const raw = localStorage.getItem("cart");
+      if (!raw) return [];
+
+      const parsed = JSON.parse(raw);
+      return sanitizeCart(parsed);
+    } catch {
       return [];
     }
   });
 
-  // ✅ Guardar el carrito en localStorage cada vez que cambia
   useEffect(() => {
     try {
       localStorage.setItem("cart", JSON.stringify(cart));
-    } catch (error) {
-      console.error("Error saving cart to localStorage:", error);
+    } catch {
+      // silent fail
     }
   }, [cart]);
 
-  // Agregar al carrito
   const addToCart = (product: CartItem, quantity: number = 1) => {
-    if (quantity <= 0) return;
+    if (quantity <= 0 || quantity > 1000) return;
 
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
-      if (existingProduct) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
+    setCart((prev) => {
+      const existing = prev.find((i) => i.id === product.id);
+
+      if (existing) {
+        return prev.map((i) =>
+          i.id === product.id
+            ? { ...i, quantity: Math.min(i.quantity + quantity, 1000) }
+            : i,
         );
       }
-      return [...prevCart, { ...product, quantity }];
+
+      return [
+        ...prev,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity,
+        },
+      ];
     });
   };
 
-  // Actualizar cantidad
   const updateQuantity = (productId: number, quantity: number) => {
-    setCart((prevCart) => {
-      if (quantity <= 0) {
-        return prevCart.filter((item) => item.id !== productId);
-      }
+    if (!Number.isFinite(productId)) return;
 
-      return prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      );
+    setCart((prev) => {
+      if (quantity <= 0) return prev.filter((i) => i.id !== productId);
+
+      if (quantity > 1000) quantity = 1000;
+
+      return prev.map((i) => (i.id === productId ? { ...i, quantity } : i));
     });
   };
 
-  // Eliminar del carrito
   const removeFromCart = (productId: number) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prev) => prev.filter((i) => i.id !== productId));
   };
 
-  // Vaciar carrito
   const clearCart = () => {
     localStorage.removeItem("cart");
     setCart([]);
   };
 
-  // Utilidades
-  const getTotalItems = () =>
-    cart.reduce((total, item) => total + item.quantity, 0);
+  const getTotalItems = () => cart.reduce((t, i) => t + i.quantity, 0);
 
   const getTotalPrice = () =>
-    cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    cart.reduce((t, i) => t + i.price * i.quantity, 0);
 
   const value = useMemo(
     () => ({
@@ -107,13 +135,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       getTotalItems,
       getTotalPrice,
     }),
-    [cart]
+    [cart],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
-// Hook personalizado
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {
